@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+    nginx:
+        build: ./nginx
+        ports:
+          - 8080:80
+        depends_on:
+          - web
+        links:
+          - "web:message_web"
+        volumes:
+          - django_static_data:/code/staticfiles
+        networks:
+          - messaging
+    web:
+        build: .
+        volumes:
+            - django_static_data:/code/staticfiles  # persist Django app data to the docker volume 'django_data'
+        links:
+            - "db:database"
+        expose: 
+            - 8000
+        depends_on: # the web service won't start until the db container is Started
+            db: 
+                condition: service_healthy 
+        command: >
+            sh -c "python manage.py collectstatic --noinput &&
+            python manage.py makemigrations &&
+            python manage.py migrate &&
+            gunicorn messaging.wsgi:application"
+        networks:
+            - messaging
+        env_file:  
+            - ./.env.production
+    
+    db:
+        image: postgres
+        restart: always 
+        env_file:  
+            - ./.env.prod.db
+        expose:  
+            - 5432
+        volumes:
+            - pg_data:/var/lib/postgresql   # persist Postgres data to the docker volume 'pg_data'
+        networks:
+            - messaging
+        healthcheck:
+            test: "exit 0"
+
+volumes:
+    pg_data:
+    django_static_data:
+networks:
+    messaging:
+      name: messaging-network
