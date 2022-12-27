@@ -143,3 +143,53 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(pathname)s:%(funcName)s:%(lineno)d %(process)d %(thread)d '
+                      '%(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': os.getenv("LOG_LEVEL", "INFO"),
+            'class': 'logging.StreamHandler',
+            'formatter': os.getenv("LOG_FORMATTER", "simple")
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': str(BASE_DIR_EXT) + '/logs/messages.log',
+            'maxBytes': 52428800,
+            'backupCount': 2,
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'app_log.file': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'app_log.console': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    }
+}
