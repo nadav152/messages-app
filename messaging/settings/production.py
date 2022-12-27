@@ -9,8 +9,6 @@ DEBUG = os.getenv("DEBUG", False)  == 'True'
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS",
                           "127.0.0.1,localhost,0.0.0.0").split(",")
 
-CSRF_TRUSTED_ORIGINS = ['https://*.polarisdome.ai']
-
 
 DATABASES = {
     'default': {
