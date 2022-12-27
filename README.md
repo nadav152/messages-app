@@ -1,6 +1,13 @@
 # Introduction
 This project is a Django backend app. In this app a users messaging app is implemented.
 
+**Tools** -
+
+- DRF
+- Postgress SQL
+- DRF simple JWT token
+- Django filters
+
 # Setup & Installation
 
 1. Clone the repo using either HTTPS or SSH. If using SSH make sure to configre your public key in GitHub.
