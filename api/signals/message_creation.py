@@ -15,14 +15,12 @@ def validate_client_creation_add_classifications(sender, instance, created, **kw
     """
     try:
         if created:
-            MessageToUser.objects.create(
-                receiver=instance.receiver, message=instance
-            )
+            MessageToUser.objects.create(receiver=instance.receiver, message=instance)
             logger_console.debug(
-            f"[CREATED MESSAGE TO USER] Message subject:{instance.subject} | Message receiver ID: {instance.receiver.id}",
-            exc_info=True,
-        )
-            
+                f"[CREATED MESSAGE TO USER] Message subject:{instance.subject} | Message receiver ID: {instance.receiver.id}",
+                exc_info=True,
+            )
+
     except Exception:
         logger_console.error(
             f"[FAILED CREATE MESSAGE TO USER] Message subject:{instance.subject}",

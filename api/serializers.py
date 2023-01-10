@@ -1,14 +1,14 @@
-from api.models import Message, MessageToUser
 from rest_framework import serializers
+from api.models import Message, MessageToUser
 
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = '__all__'
-        
-        
+        fields = ['id', 'sender', 'receiver', 'message', 'subject', 'creation_time']
+
+
 class MessageToUserSerializer(serializers.ModelSerializer):
-       class Meta:
+    class Meta:
         model = MessageToUser
-        fields = '__all__'
+        fields = ['id', 'receiver', 'message', 'creation_time', 'was_seen']
